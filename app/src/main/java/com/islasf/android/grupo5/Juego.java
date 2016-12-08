@@ -12,14 +12,21 @@ import java.util.Random;
 public class Juego {
 
     private Configuracion configuracion;
+    private Preferencias preferencias;
     private ArrayList<Casilla> listCasillas;
+    private ArrayList<Casilla> listReinicio;
+    private int numPulsaciones;
 
-    public Juego(Configuracion configuracion) {
+    public Juego(Configuracion configuracion, Preferencias preferencias) {
+        this.preferencias=preferencias;
         this.configuracion = configuracion;
         this.listCasillas=new ArrayList<>();
+        this.numPulsaciones=0;
+
         while (condicionVictoria()){
             this.generarCasillas();
         }
+        this.listReinicio=this.listCasillas;
     }
 
     private void generarCasillas(){
@@ -117,11 +124,23 @@ public class Juego {
         return true;
     }
 
+    public void reiniciarJuego(){
+        this.listCasillas=this.listReinicio;
+    }
+
     public Configuracion getConfiguracion() {
         return configuracion;
     }
 
     public ArrayList<Casilla> getCasillas() {
         return listCasillas;
+    }
+
+    public int getNumPulsaciones() {
+        return numPulsaciones;
+    }
+
+    public void incrementarNumPulsaciones() {
+        this.numPulsaciones++;
     }
 }

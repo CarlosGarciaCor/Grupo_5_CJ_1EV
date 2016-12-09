@@ -2,10 +2,12 @@ package com.islasf.android.grupo5;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ public class ActividadPrincipal extends AppCompatActivity {
     private ArrayList<Button> botones;
     private TextView tbTiempo;
     private TextView tbPulsaciones;
+    private int btnHeigth;
+    private int btnWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,18 @@ public class ActividadPrincipal extends AppCompatActivity {
         layout.setRowCount(configuracion.getY());
         layout.setColumnCount(configuracion.getX());
 
+        DisplayMetrics display=new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(display);
+
+        /*
+        RelativeLayout rLayout=(RelativeLayout) findViewById(R.id.relativeLayout);
+        int rLayoutHeight=rLayout.getHeight();
+        Log.i("relativeLayout H", rLayoutHeight+"");
+*/
+
+        btnHeigth=(display.heightPixels-500)/configuracion.getY();
+        btnWidth=display.widthPixels/configuracion.getX();
+
         juego=new Juego(configuracion, preferencias);
 
         int i=0;
@@ -65,12 +81,11 @@ public class ActividadPrincipal extends AppCompatActivity {
         Button btn=new Button(this);
         btn.setId(id); //Si no le pasas una ID te tira excepciones a la cara
 
-        int btnHeigth=layout.getHeight()/configuracion.getY();
-        int btnWidth=layout.getWidth()/configuracion.getX();
         btn.setHeight(btnHeigth);
         btn.setWidth(btnWidth);
 
         btn.setText(Integer.toString(casilla.getValor()));
+        btn.setTextSize(18);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

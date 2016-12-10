@@ -1,12 +1,14 @@
 package com.islasf.android.grupo5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +72,33 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_action_list); // Le indicamos cual es el icono.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Habilitamos la función del botón.
+
+        //Pulsación de botones del NavView y demás.
+        NavigationView navView = (NavigationView)findViewById(R.id.navview);
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.juego_opcion_1:
+                                break;
+                            case R.id.juego_opcion_2:
+                                break;
+                            case R.id.opts_opcion_1:
+                                Intent preferencias = new Intent(getApplicationContext(), ConfiguracionActivity.class);
+                                startActivity(preferencias);
+                                break;
+                            case R.id.opt_salir:
+                                break;
+                        }
+
+                        menuLateral.closeDrawers(); // Si se pulsa una opción se cierra el menú lateral.
+
+                        return true;
+                    }
+                });
+
 
         gameLayout = (LinearLayout) findViewById(R.id.gameLayout);
 

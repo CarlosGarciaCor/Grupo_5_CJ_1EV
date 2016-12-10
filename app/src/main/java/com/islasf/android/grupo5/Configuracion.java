@@ -1,7 +1,7 @@
 package com.islasf.android.grupo5;
 
 /**
- * Created by sanch on 07/12/2016.
+ * @author Carlos García Corpas y Javier Sánchez Gómez
  */
 
 public class Configuracion {
@@ -11,11 +11,19 @@ public class Configuracion {
     private int y;
     private int maxPulsaciones;
 
-    public Configuracion(int valorMax, int x, int y, int maxPulsaciones) {
+    private boolean vibracion;
+    private boolean sonido;
+
+    private String modo;
+
+    public Configuracion(int valorMax, int x, int y, int maxPulsaciones, boolean vibracion, boolean sonido, String modo) {
         this.valorMax = valorMax;
         this.x = x;
         this.y = y;
         this.maxPulsaciones=maxPulsaciones;
+        this.vibracion=vibracion;
+        this.sonido=sonido;
+        this.modo=modo;
     }
 
     public int getValorMax() {
@@ -32,5 +40,17 @@ public class Configuracion {
 
     public int getMaxPulsaciones() {
         return maxPulsaciones;
+    }
+
+    public boolean isVibracion() {
+        return vibracion;
+    }
+
+    public boolean isSonido() {
+        return sonido;
+    }
+
+    public String getModo() {
+        return modo;
     }
 }

@@ -25,7 +25,6 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private Juego juego;
     private Configuracion configuracion;
-    private Preferencias preferencias;
     private DrawerLayout menuLateral;
     private GridLayout layout;
     private ArrayList<Button> botones;
@@ -101,8 +100,7 @@ public class ActividadPrincipal extends AppCompatActivity {
             botones.clear();
         }
 
-        configuracion=new Configuracion(2, 3, 3, 0);
-        preferencias=new Preferencias(true, true, "NUMEROS");
+        configuracion=new Configuracion(2, 3, 3, 0, true, true, "NUMEROS");
 
         layout.setRowCount(configuracion.getY());
         layout.setColumnCount(configuracion.getX());
@@ -120,7 +118,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         btnHeigth=(alturaGrid)/configuracion.getY();
         btnWidth=display.widthPixels/configuracion.getX();
 
-        juego=new Juego(configuracion, preferencias);
+        juego=new Juego(configuracion);
 
         int i=0;
         for (int y=0; y<configuracion.getY(); y++){
@@ -154,10 +152,10 @@ public class ActividadPrincipal extends AppCompatActivity {
     }
 
     private void pulsarCasilla(View v){
-        if (this.preferencias.isVibracion()){
+        if (this.configuracion.isVibracion()){
             vibrator.vibrate(200);
         }
-        if (this.preferencias.isSonido()){
+        if (this.configuracion.isSonido()){
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
         Button btn=(Button)v;

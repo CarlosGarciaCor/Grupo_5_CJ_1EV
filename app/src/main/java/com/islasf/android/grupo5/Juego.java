@@ -12,13 +12,11 @@ import java.util.Random;
 public class Juego {
 
     private Configuracion configuracion;
-    private Preferencias preferencias;
     private ArrayList<Casilla> listCasillas;
     private ArrayList<Casilla> listReinicio;
     private int numPulsaciones;
 
-    public Juego(Configuracion configuracion, Preferencias preferencias) {
-        this.preferencias=preferencias;
+    public Juego(Configuracion configuracion) {
         this.configuracion = configuracion;
         this.listCasillas=new ArrayList<>();
         this.numPulsaciones=0;

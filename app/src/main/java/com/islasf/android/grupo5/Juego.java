@@ -2,6 +2,7 @@ package com.islasf.android.grupo5;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,7 +10,7 @@ import java.util.Random;
  * @author Carlos García y Javier Sánchez
  */
 
-public class Juego {
+public class Juego implements Serializable {
 
     private Configuracion configuracion;
     private ArrayList<Casilla> listCasillas;
@@ -24,11 +25,21 @@ public class Juego {
         while (condicionVictoria()){
             this.generarCasillas();
         }
-        this.listReinicio=this.listCasillas;
+
+        //Como el paso de objetos es por referencia, si haces listReinicio=listCasillas simplemente,
+        //la listReinicio va a estar apuntando a la otra, por lo que se va a ir actualizando.
+        this.listReinicio=new ArrayList<>();
+        for (Casilla item: listCasillas){
+            int x=item.getX();
+            int y=item.getY();
+            int valor=item.getValor();
+
+            listReinicio.add(new Casilla(x, y, valor));
+        }
+
     }
 
     private void generarCasillas(){
-        int numCasillas=this.configuracion.getX()*this.configuracion.getY();
         Random random=new Random();
         for (int y=1; y<=this.configuracion.getY(); y++){
             for (int x=1; x<=this.configuracion.getX(); x++){
@@ -123,7 +134,16 @@ public class Juego {
     }
 
     public void reiniciarJuego(){
-        this.listCasillas=this.listReinicio;
+        //Lo mismo que antes
+        this.listCasillas=new ArrayList<>();
+        for (Casilla item: listReinicio){
+            int x=item.getX();
+            int y=item.getY();
+            int valor=item.getValor();
+
+            listCasillas.add(new Casilla(x, y, valor));
+        }
+        this.numPulsaciones=0;
     }
 
     public Configuracion getConfiguracion() {
@@ -132,6 +152,10 @@ public class Juego {
 
     public ArrayList<Casilla> getCasillas() {
         return listCasillas;
+    }
+
+    public ArrayList<Casilla> getCasillasReinicio() {
+        return listReinicio;
     }
 
     public int getNumPulsaciones() {

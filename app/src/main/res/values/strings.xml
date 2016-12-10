@@ -7,4 +7,8 @@
     <string name="grp2">Options</string>
     <string name="optC1">Game configuration</string>
     <string name="optExit">Exit</string>
+    <string name="dTitle">YOU WON!</string>
+    <string name="dDesc">Congratulations</string>
+    <string name="restart">Play Again</string>
+    <string name="newGame">New Game</string>
 </resources>

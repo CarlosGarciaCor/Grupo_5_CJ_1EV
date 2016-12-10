@@ -1,14 +1,17 @@
 package com.islasf.android.grupo5;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.PersistableBundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +47,6 @@ public class ActividadPrincipal extends AppCompatActivity {
     private Vibrator vibrator;
     private SoundPool poolSonidos;
     private int sonidoPulsacion;
-
 
     private final int[] BTN_DRAW={R.drawable.draw_btn1,
             R.drawable.draw_btn2,
@@ -82,15 +84,17 @@ public class ActividadPrincipal extends AppCompatActivity {
 
                         switch (menuItem.getItemId()) {
                             case R.id.juego_opcion_1:
+                                nuevaPartida();
                                 break;
                             case R.id.juego_opcion_2:
+                                reiniciarPartida();
                                 break;
                             case R.id.opts_opcion_1:
                                 Intent preferencias = new Intent(getApplicationContext(), ConfiguracionActivity.class);
                                 startActivity(preferencias);
                                 break;
                             case R.id.opt_salir:
-                                break;
+                                finish();
                         }
 
                         menuLateral.closeDrawers(); // Si se pulsa una opción se cierra el menú lateral.
@@ -98,7 +102,6 @@ public class ActividadPrincipal extends AppCompatActivity {
                         return true;
                     }
                 });
-
 
         gameLayout = (LinearLayout) findViewById(R.id.gameLayout);
 
@@ -128,12 +131,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         chrono.setBase(SystemClock.elapsedRealtime()-0); //Restart chrono
         tbPulsaciones.setText(Integer.toString(0));
 
-        if (botones.size()>0){
-            gameLayout.removeAllViews();
-            botones.clear();
-        }
-
-        configuracion=new Configuracion(5, 10, 15, 0, true, true, "NUMEROS");
+        configuracion=new Configuracion(2, 3, 3, 0, true, true, "NUMEROS");
 
         DisplayMetrics display=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(display);
@@ -142,23 +140,37 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         juego=new Juego(configuracion);
 
-        int i=0;
-        for (int y=0; y<configuracion.getY(); y++){
-            LinearLayout linea=new LinearLayout(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-
-            linea.setLayoutParams(params);
-            linea.setOrientation(LinearLayout.HORIZONTAL);
-            linea.setWeightSum(configuracion.getX());
-
-            for (int x=0; x<configuracion.getX(); x++){
-                crearBoton(juego.getCasillas().get(i), i, linea);
-                i++;
-            }
-            gameLayout.addView(linea);
+        for (Casilla item: juego.getCasillas()){
+            Log.i("tag", ""+item.getValor());
         }
+        for (Casilla item: juego.getCasillasReinicio()){
+            Log.i("reinicio", ""+item.getValor());
+        }
+
+        if (botones.size()!=juego.getCasillas().size()) {
+            gameLayout.removeAllViews();
+            botones.clear();
+
+            int i = 0;
+            for (int y = 0; y < configuracion.getY(); y++) {
+                LinearLayout linea = new LinearLayout(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+
+                linea.setLayoutParams(params);
+                linea.setOrientation(LinearLayout.HORIZONTAL);
+                linea.setWeightSum(configuracion.getX());
+
+                for (int x = 0; x < configuracion.getX(); x++) {
+                    crearBoton(juego.getCasillas().get(i), i, linea);
+                    i++;
+                }
+                gameLayout.addView(linea);
+            }
+        }
+        else
+            actualizar();
 
         chrono.start();
     }
@@ -169,12 +181,10 @@ public class ActividadPrincipal extends AppCompatActivity {
         btn.setId(id);
 
         btn.setBackground(getResources().getDrawable(BTN_DRAW[casilla.getValor() - 1]));
-        //btn.setText(Integer.toString(casilla.getValor()));
-        //btn.setTextSize(18);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+                ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
 
         btn.setLayoutParams(params);
 
@@ -202,24 +212,68 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego.incrementarNumPulsaciones();
         this.actualizar();
 
-        if (juego.condicionVictoria()){
-            if (this.configuracion.isVibracion()){
-                vibrator.vibrate(200);
-            }
-            if (this.configuracion.isSonido()){
-                poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
-            }
-            Toast t=Toast.makeText(this, "BRAVO", Toast.LENGTH_SHORT);
-            t.show();
-            nuevaPartida();
+        for (Casilla item: juego.getCasillas()){
+            Log.i("tag", ""+item.getValor());
         }
+        for (Casilla item: juego.getCasillasReinicio()){
+            Log.i("reinicio", ""+item.getValor());
+        }
+
+        if (juego.condicionVictoria()){
+            victoria();
+        }
+    }
+
+    private void victoria() {
+        if (this.configuracion.isVibracion()){
+            vibrator.vibrate(200);
+        }
+        if (this.configuracion.isSonido()){
+            poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
+        }
+
+        //TODO guardar resultado
+
+        DialogoWin win=new DialogoWin();
+        win.show(getFragmentManager(), "dialogo");
+    }
+
+    public void onRespuesta(int result){
+        if (result==0)
+            nuevaPartida();
+        else
+            reiniciarPartida();
+    }
+
+    private void reiniciarPartida(){
+        juego.reiniciarJuego();
+
+        actualizar();
+        chrono.setBase(SystemClock.elapsedRealtime()-0);
     }
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
             botones.get(i).setBackground(getResources().getDrawable(BTN_DRAW[juego.getCasillas().get(i).getValor()-1]));
-            //botones.get(i).setText(Integer.toString(juego.getCasillas().get(i).getValor()));
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("juego", juego);
+        outState.putLong("time", chrono.getBase());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        juego=(Juego)savedInstanceState.getSerializable("juego");
+        tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
+        chrono.setBase(savedInstanceState.getLong("time"));
+        actualizar();
     }
 }

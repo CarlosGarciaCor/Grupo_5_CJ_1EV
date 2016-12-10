@@ -1,20 +1,28 @@
 package com.islasf.android.grupo5;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,18 +34,22 @@ public class ActividadPrincipal extends AppCompatActivity {
     private Juego juego;
     private Configuracion configuracion;
     private DrawerLayout menuLateral;
-    private GridLayout layout;
+    private LinearLayout gameLayout;
     private ArrayList<Button> botones;
-    private TextView tbTiempo;
     private TextView tbPulsaciones;
-    private int btnHeigth;
-    private int btnWidth;
 
+    private Chronometer chrono;
     private Vibrator vibrator;
     private SoundPool poolSonidos;
     private int sonidoPulsacion;
 
-    private int alturaGrid;
+
+    private final int[] BTN_DRAW={R.drawable.draw_btn1,
+            R.drawable.draw_btn2,
+            R.drawable.draw_btn3,
+            R.drawable.draw_btn4,
+            R.drawable.draw_btn5};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +71,10 @@ public class ActividadPrincipal extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_action_list); // Le indicamos cual es el icono.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Habilitamos la función del botón.
 
-        layout = (GridLayout) findViewById(R.id.gridLayout);
+        gameLayout = (LinearLayout) findViewById(R.id.gameLayout);
 
-        tbTiempo=(TextView)findViewById(R.id.tbTiempo);
-        tbTiempo.setText("00:00");
+        chrono= (Chronometer) findViewById(R.id.chrono);
+
         tbPulsaciones=(TextView)findViewById(R.id.tbPulsaciones);
         tbPulsaciones.setText("0");
         botones=new ArrayList<>();
@@ -82,63 +94,60 @@ public class ActividadPrincipal extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        RelativeLayout rLayout=(RelativeLayout) findViewById(R.id.relativeLayout);
-        int rLayoutHeight= rLayout.getHeight();
-        Log.i("relativeLayout H", rLayoutHeight+"");
-
-        GridLayout gLayout = (GridLayout) findViewById(R.id.gridLayout);
-        alturaGrid = gLayout.getHeight();
-        Log.i("gLayout", alturaGrid+"");
-    }
-
     private void nuevaPartida(){
 
+        chrono.setBase(SystemClock.elapsedRealtime()-0); //Restart chrono
+        tbPulsaciones.setText(Integer.toString(0));
+
         if (botones.size()>0){
-            layout.removeAllViews();
+            gameLayout.removeAllViews();
             botones.clear();
         }
 
-        configuracion=new Configuracion(2, 3, 3, 0, true, true, "NUMEROS");
-
-        layout.setRowCount(configuracion.getY());
-        layout.setColumnCount(configuracion.getX());
+        configuracion=new Configuracion(5, 10, 15, 0, true, true, "NUMEROS");
 
         DisplayMetrics display=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(display);
-        Log.i("pepe", display.heightPixels+"");
 
-        /*
-        RelativeLayout rLayout=(RelativeLayout) findViewById(R.id.relativeLayout);
-        int rLayoutHeight=rLayout.getHeight();
-        Log.i("relativeLayout H", rLayoutHeight+"");
-*/
-
-        btnHeigth=(alturaGrid)/configuracion.getY();
-        btnWidth=display.widthPixels/configuracion.getX();
+        gameLayout.setWeightSum(configuracion.getY());
 
         juego=new Juego(configuracion);
 
         int i=0;
         for (int y=0; y<configuracion.getY(); y++){
+            LinearLayout linea=new LinearLayout(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+
+            linea.setLayoutParams(params);
+            linea.setOrientation(LinearLayout.HORIZONTAL);
+            linea.setWeightSum(configuracion.getX());
+
             for (int x=0; x<configuracion.getX(); x++){
-                crearBoton(juego.getCasillas().get(i), i);
+                crearBoton(juego.getCasillas().get(i), i, linea);
                 i++;
             }
+            gameLayout.addView(linea);
         }
+
+        chrono.start();
     }
 
-    private void crearBoton(Casilla casilla, int id){
+    private void crearBoton(Casilla casilla, int id, LinearLayout linea){
 
         Button btn=new Button(this);
-        btn.setId(id); //Si no le pasas una ID te tira excepciones a la cara
+        btn.setId(id);
 
-        btn.setHeight(btnHeigth);
-        btn.setWidth(btnWidth);
+        btn.setBackground(getResources().getDrawable(BTN_DRAW[casilla.getValor() - 1]));
+        //btn.setText(Integer.toString(casilla.getValor()));
+        //btn.setTextSize(18);
 
-        btn.setText(Integer.toString(casilla.getValor()));
-        btn.setTextSize(18);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+
+        btn.setLayoutParams(params);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,24 +156,30 @@ public class ActividadPrincipal extends AppCompatActivity {
             }
         });
 
-        layout.addView(btn);
+        linea.addView(btn);
         botones.add(btn);
     }
 
     private void pulsarCasilla(View v){
-        if (this.configuracion.isVibracion()){
-            vibrator.vibrate(200);
-        }
+
         if (this.configuracion.isSonido()){
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
+
         Button btn=(Button)v;
         Casilla casilla=juego.getCasillas().get(btn.getId());
 
         juego.pulsarCasilla(casilla);
         juego.incrementarNumPulsaciones();
         this.actualizar();
+
         if (juego.condicionVictoria()){
+            if (this.configuracion.isVibracion()){
+                vibrator.vibrate(200);
+            }
+            if (this.configuracion.isSonido()){
+                poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
+            }
             Toast t=Toast.makeText(this, "BRAVO", Toast.LENGTH_SHORT);
             t.show();
             nuevaPartida();
@@ -173,9 +188,9 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            botones.get(i).setText(Integer.toString(juego.getCasillas().get(i).getValor()));
+            botones.get(i).setBackground(getResources().getDrawable(BTN_DRAW[juego.getCasillas().get(i).getValor()-1]));
+            //botones.get(i).setText(Integer.toString(juego.getCasillas().get(i).getValor()));
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
     }
-
 }

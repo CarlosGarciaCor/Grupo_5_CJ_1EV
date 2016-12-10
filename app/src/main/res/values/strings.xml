@@ -7,6 +7,21 @@
     <string name="grp2">Options</string>
     <string name="optC1">Game configuration</string>
     <string name="optExit">Exit</string>
+
+    <string name="seekbarX">Elements on X axis:</string>
+    <string name="seekbarY">Elements on Y axis:</string>
+    <string name="numMax">Maximum number of elements:</string>
+
+    <string name="colorOrNumber">Style of boxes:</string>
+    <string name="colorOpt">Colors</string>
+    <string name="numOpt">Numbers</string>
+
+    <string name="prefs">Preferences:</string>
+    <string name="vibr">Vibration</string>
+    <string name="soun">Sound</string>
+
+    <string name="accept">Accept</string>
+    <string name="back">Back</string>
     <string name="dTitle">YOU WON!</string>
     <string name="dDesc">Congratulations</string>
     <string name="restart">Play Again</string>

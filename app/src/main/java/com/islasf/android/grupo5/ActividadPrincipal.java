@@ -131,7 +131,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         chrono.setBase(SystemClock.elapsedRealtime()-0); //Restart chrono
         tbPulsaciones.setText(Integer.toString(0));
 
-        configuracion=new Configuracion(2, 3, 3, 0, true, true, "NUMEROS");
+        configuracion=new Configuracion(5, 10, 15, true, true, "NUMEROS");
 
         DisplayMetrics display=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(display);

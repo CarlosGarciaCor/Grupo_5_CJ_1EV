@@ -6,9 +6,11 @@
         <menu>
             <item
                 android:id="@+id/juego_opcion_1"
+                android:icon="@android:drawable/ic_menu_slideshow"
                 android:title="@string/optJ1"/>
             <item
                 android:id="@+id/juego_opcion_2"
+                android:icon="@android:drawable/ic_menu_revert"
                 android:title="@string/optJ2"/>
         </menu>
     </item>
@@ -18,14 +20,17 @@
         <menu>
             <item
                 android:id="@+id/opts_opcion_1"
+                android:icon="@android:drawable/ic_menu_edit"
                 android:title="@string/optC1"/>
             <item
                 android:id="@+id/opts_opcion_2"
+                android:icon="@android:drawable/ic_menu_manage"
                 android:title="@string/optC2"/>
         </menu>
     </item>
 
     <item
         android:id="@+id/opt_salir"
+        android:icon="@android:drawable/ic_menu_directions"
         android:title="@string/optExit"/>
 </menu>

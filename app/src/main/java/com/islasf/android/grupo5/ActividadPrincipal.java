@@ -179,15 +179,15 @@ public class ActividadPrincipal extends AppCompatActivity {
         btn.setId(id);
         //TODO hacer drawables numericos y elegir aquí en funcion de configuracion.getModo
         //TODO como lo de más arriba, getDrawable esta deprecated para < API21, mirar si queremos controlarlo
-        if (configuracion.getModo() == "COLORES")
-            btn.setBackground(getResources().getDrawable(BTN_COLORDRAW[casilla.getValor() - 1]));
-        else{
+      //  if (configuracion.getModo() == "COLORES")
+          //  btn.setBackground(getResources().getDrawable(BTN_COLORDRAW[casilla.getValor() - 1]));
+     //   else{
             btn.setBackground(getResources().getDrawable(BTN_NUMDRAW));
             btn.setTextColor(getResources().getColor(R.color.white));
-            btn.setTextSize(getResources().getDimension(R.dimen.textoBoton));
+            //btn.setTextSize();//TODO ESTO.
             btn.setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
-            btn.setText(casilla.getValor());
-        }
+            btn.setText(String.valueOf(casilla.getValor()));
+      //  }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -261,17 +261,17 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            if (configuracion.getModo() == "COLORES")
-                botones.get(i).setBackground(getResources().getDrawable(BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
-            else {
+            //if (configuracion.getModo() == "COLORES")
+              //  botones.get(i).setBackground(getResources().getDrawable(BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
+           // else {
                 //TODO Joder cuanto deprecado
                 botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
                 botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
                 botones.get(i).setTextColor(getResources().getColor(R.color.white));
-                botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));
+                //botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));//TODO Esto otro.
                 botones.get(i).setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
-                botones.get(i).setText(juego.getCasillas().get(i).getValor());
-            }
+                botones.get(i).setText(String.valueOf(juego.getCasillas().get(i).getValor()));
+            //}
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
     }

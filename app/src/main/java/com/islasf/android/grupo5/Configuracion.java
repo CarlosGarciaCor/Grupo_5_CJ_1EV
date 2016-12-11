@@ -1,10 +1,12 @@
 package com.islasf.android.grupo5;
 
+import java.io.Serializable;
+
 /**
  * @author Carlos García Corpas y Javier Sánchez Gómez
  */
 
-public class Configuracion {
+public class Configuracion implements Serializable{
 
     private int valorMax;
     private int x;

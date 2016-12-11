@@ -8,6 +8,7 @@ import android.media.SoundPool;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         // todo Me tira exception al cambiar de pantalla, habla de qu no se puede serializar el objeto juego. Supongo que todo esto tiene que ver con el bundle entonces no he podido probar
         // todo si ya funciona el juego con numeros. la cosa es que creo que en algun punto confundimos X e Y, porque por defalt me carga un 4x3 xddddd, soy listo.
 
-        // todo borrar los 5 draws que he hecho, dejar uno y lo que hay que hacer es darle propiedades de texto al button
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
@@ -89,6 +89,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                                 break;
                             case R.id.opts_opcion_1:
                                 Intent preferencias = new Intent(getApplicationContext(), ConfiguracionActivity.class);
+                                preferencias.putExtra("time", chrono.getBase());
                                 startActivityForResult(preferencias, 1234);
                                 break;
                             case R.id.opt_salir:
@@ -138,13 +139,6 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         juego=new Juego(configuracion);
 
-        for (Casilla item: juego.getCasillas()){
-            Log.i("tag", ""+item.getValor());
-        }
-        for (Casilla item: juego.getCasillasReinicio()){
-            Log.i("reinicio", ""+item.getValor());
-        }
-
         if (botones.size()!=juego.getCasillas().size()) {
             gameLayout.removeAllViews();
             botones.clear();
@@ -177,17 +171,16 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         Button btn=new Button(this);
         btn.setId(id);
-        //TODO hacer drawables numericos y elegir aquí en funcion de configuracion.getModo
-        //TODO como lo de más arriba, getDrawable esta deprecated para < API21, mirar si queremos controlarlo
-      //  if (configuracion.getModo() == "COLORES")
-          //  btn.setBackground(getResources().getDrawable(BTN_COLORDRAW[casilla.getValor() - 1]));
-     //   else{
-            btn.setBackground(getResources().getDrawable(BTN_NUMDRAW));
-            btn.setTextColor(getResources().getColor(R.color.white));
-            //btn.setTextSize();//TODO ESTO.
-            btn.setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
+
+        if (configuracion.getModo().equals("COLORES"))
+          btn.setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[casilla.getValor() - 1]));
+        else{
+            btn.setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW));
+            btn.setTextColor(ContextCompat.getColor(this, R.color.white));
+            btn.setTextSize(getResources().getDimension(R.dimen.textoBoton));
+            btn.setShadowLayer(5, 0, 0, ContextCompat.getColor(this, R.color.sombraBoton));
             btn.setText(String.valueOf(casilla.getValor()));
-      //  }
+        }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -218,13 +211,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego.pulsarCasilla(casilla);
         juego.incrementarNumPulsaciones();
         this.actualizar();
-
-        for (Casilla item: juego.getCasillas()){
-            Log.i("tag", ""+item.getValor());
-        }
-        for (Casilla item: juego.getCasillasReinicio()){
-            Log.i("reinicio", ""+item.getValor());
-        }
 
         if (juego.condicionVictoria()){
             victoria();
@@ -261,17 +247,15 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            //if (configuracion.getModo() == "COLORES")
-              //  botones.get(i).setBackground(getResources().getDrawable(BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
-           // else {
-                //TODO Joder cuanto deprecado
-                botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
-                botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
-                botones.get(i).setTextColor(getResources().getColor(R.color.white));
-                //botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));//TODO Esto otro.
-                botones.get(i).setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
+            if (configuracion.getModo() == "COLORES")
+                botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
+            else {
+                botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW));
+                botones.get(i).setTextColor(ContextCompat.getColor(this, R.color.white));
+                botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));
+                botones.get(i).setShadowLayer(5, 0, 0, ContextCompat.getColor(this, R.color.sombraBoton));
                 botones.get(i).setText(String.valueOf(juego.getCasillas().get(i).getValor()));
-            //}
+            }
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
     }
@@ -280,9 +264,9 @@ public class ActividadPrincipal extends AppCompatActivity {
         // TODO preferencias
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         configuracion = new Configuracion(
+                prefs.getInt("indiceMax", 3),
                 prefs.getInt("indiceX", 3),
                 prefs.getInt("indiceY", 4),
-                prefs.getInt("indiceMax", 3),
                 prefs.getBoolean("vibracion", true),
                 prefs.getBoolean("sonido",true),
                 prefs.getString("modo", "COLORES")
@@ -307,7 +291,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         actualizar();
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1234){
@@ -316,7 +299,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                 nuevaPartida(); //Llamando al método nuevaPartida carga la configuración. y creo que to-do debería ir bien pero no puedo probar
             } else if (resultCode == 0){
                 // Si vuelve de la configuración sin cambiar nada.
-                //TODO Restartear cronometro aqui y desactivarlo al ir a preferences.
+                chrono.setBase(data.getLongExtra("time", SystemClock.elapsedRealtime()-0));
             }
         }
     }

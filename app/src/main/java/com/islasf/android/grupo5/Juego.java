@@ -134,7 +134,6 @@ public class Juego implements Serializable {
     }
 
     public void reiniciarJuego(){
-        //Lo mismo que antes
         this.listCasillas=new ArrayList<>();
         for (Casilla item: listReinicio){
             int x=item.getX();

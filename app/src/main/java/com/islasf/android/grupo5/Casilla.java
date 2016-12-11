@@ -1,10 +1,12 @@
 package com.islasf.android.grupo5;
 
+import java.io.Serializable;
+
 /**
  * @author Carlos García y Javier Sánchez
  */
 
-public class Casilla {
+public class Casilla implements Serializable{
 
     private int x;
     private int y;

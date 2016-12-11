@@ -25,7 +25,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private CheckBox vibracion;
     private CheckBox sonido;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //TODO Que la configuracion cuando empiece sea la del fichero de prefs.

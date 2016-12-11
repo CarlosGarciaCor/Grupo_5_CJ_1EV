@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Flip Game</string>
     <string name="username">User name</string>
+    <string name="flipmenu">Flip Menu</string>
     <string name="grp1">Game</string>
     <string name="optJ1">New game</string>
     <string name="optJ2">Restart game</string>

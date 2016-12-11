@@ -10,14 +10,16 @@ sacada de la página web: http://www.sgoliver.net/blog/interfaz-de-usuario-en-an
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@android:color/holo_orange_light"
+        android:layout_height="150dp"
+        android:src="@drawable/draw_fondo"
         android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/username"
+        android:text="@string/flipmenu"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif"
         android:layout_gravity="bottom"

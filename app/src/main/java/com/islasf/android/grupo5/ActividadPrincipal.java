@@ -46,7 +46,11 @@ public class ActividadPrincipal extends AppCompatActivity {
             R.drawable.draw_btncolor4,
             R.drawable.draw_btncolor5};
 
-    private final int BTN_NUMDRAW = R.drawable.draw_btnnum;
+    private final int[] BTN_NUMDRAW = {R.drawable.btnnum1,
+            R.drawable.btnnum2,
+            R.drawable.btnnum3,
+            R.drawable.btnnum4,
+            R.drawable.btnnum5};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,13 +177,9 @@ public class ActividadPrincipal extends AppCompatActivity {
         btn.setId(id);
 
         if (configuracion.getModo().equals("COLORES"))
-          btn.setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[casilla.getValor() - 1]));
+            btn.setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[casilla.getValor() - 1]));
         else{
-            btn.setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW));
-            btn.setTextColor(ContextCompat.getColor(this, R.color.white));
-            btn.setTextSize(getResources().getDimension(R.dimen.textoBoton));
-            btn.setShadowLayer(5, 0, 0, ContextCompat.getColor(this, R.color.sombraBoton));
-            btn.setText(String.valueOf(casilla.getValor()));
+            btn.setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW[casilla.getValor() - 1]));
         }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -247,14 +247,12 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            if (configuracion.getModo() == "COLORES")
+            if (configuracion.getModo().equals("COLORES")){
+                botones.get(i).setText("");
                 botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
+            }
             else {
-                botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW));
-                botones.get(i).setTextColor(ContextCompat.getColor(this, R.color.white));
-                botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));
-                botones.get(i).setShadowLayer(5, 0, 0, ContextCompat.getColor(this, R.color.sombraBoton));
-                botones.get(i).setText(String.valueOf(juego.getCasillas().get(i).getValor()));
+                botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW[juego.getCasillas().get(i).getValor() - 1]));
             }
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));

@@ -127,7 +127,7 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void nuevaPartida(){
 
-        chrono.setBase(SystemClock.elapsedRealtime()-0); //Restart chrono
+        chrono.setBase(SystemClock.elapsedRealtime()); //Restart chrono
         tbPulsaciones.setText(Integer.toString(0));
 
         cargarConfiguracion();
@@ -242,12 +242,12 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego.reiniciarJuego();
 
         actualizar();
-        chrono.setBase(SystemClock.elapsedRealtime()-0);
+        chrono.setBase(SystemClock.elapsedRealtime());
     }
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            if (configuracion.getModo() == "COLORES")
+            if (configuracion.getModo().equals("COLORES"))
                 botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
             else {
                 botones.get(i).setBackground(ContextCompat.getDrawable(this, BTN_NUMDRAW));
@@ -295,11 +295,16 @@ public class ActividadPrincipal extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1234){
             if (resultCode == 1){
-                // Si vuelve de la configuración habiéndola cambiado.
-                nuevaPartida(); //Llamando al método nuevaPartida carga la configuración. y creo que to-do debería ir bien pero no puedo probar
+                // Si vuelve de la configuración habiendo cambiado el formato:
+                nuevaPartida();
+            } else if (resultCode == 2){
+                // Si vuelve de la configuración sin cambiar nada definitorio:
+                cargarConfiguracion();
+                actualizar();
+                chrono.setBase(data.getLongExtra("time", SystemClock.elapsedRealtime())); //TODO
             } else if (resultCode == 0){
-                // Si vuelve de la configuración sin cambiar nada.
-                chrono.setBase(data.getLongExtra("time", SystemClock.elapsedRealtime()-0));
+                //Si vuelve dandole al back del hardware.
+                //TODO
             }
         }
     }

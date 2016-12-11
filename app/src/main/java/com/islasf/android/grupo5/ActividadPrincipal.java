@@ -89,7 +89,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                                 break;
                             case R.id.opts_opcion_1:
                                 Intent preferencias = new Intent(getApplicationContext(), ConfiguracionActivity.class);
-                                startActivity(preferencias);
+                                startActivityForResult(preferencias, 1234);
                                 break;
                             case R.id.opt_salir:
                                 finish();
@@ -305,5 +305,19 @@ public class ActividadPrincipal extends AppCompatActivity {
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
         chrono.setBase(savedInstanceState.getLong("time"));
         actualizar();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1234){
+            if (resultCode == 1){
+                // Si vuelve de la configuración habiéndola cambiado.
+                nuevaPartida(); //Llamando al método nuevaPartida carga la configuración. y creo que to-do debería ir bien pero no puedo probar
+            } else if (resultCode == 0){
+                // Si vuelve de la configuración sin cambiar nada.
+                //TODO Restartear cronometro aqui y desactivarlo al ir a preferences.
+            }
+        }
     }
 }

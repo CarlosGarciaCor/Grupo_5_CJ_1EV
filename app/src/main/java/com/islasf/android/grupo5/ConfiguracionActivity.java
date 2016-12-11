@@ -28,6 +28,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO Que la configuracion cuando empiece sea la del fichero de prefs.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
 
@@ -124,11 +125,13 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         editor.apply();
 
-        //TODO Volver a la actividad principal empezando una nueva partida, pero si en vez de esto le da a volver tiene que volver a la partida que estaba, damn.
+        setResult(1);
+        this.finish();
         //TODO Layout landscape para esta vaina
     }
 
     public void volver(View v){
+        setResult(0);
         this.finish();
     }
 }

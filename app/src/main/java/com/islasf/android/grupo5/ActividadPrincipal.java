@@ -36,6 +36,9 @@ public class ActividadPrincipal extends AppCompatActivity {
     private TextView tbPulsaciones;
 
     private Chronometer chrono;
+    private boolean isChronoRunning=false;
+    private long onChronoPause=0;
+
     private Vibrator vibrator;
     private SoundPool poolSonidos;
     private int sonidoPulsacion;
@@ -167,8 +170,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         }
         else
             actualizar();
-
-        chrono.start();
     }
 
     private void crearBoton(Casilla casilla, int id, LinearLayout linea){
@@ -201,6 +202,13 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void pulsarCasilla(View v){
 
+        if (!isChronoRunning){
+            chrono.setBase(SystemClock.elapsedRealtime());
+            chrono.start();
+            isChronoRunning=true;
+        }
+
+
         if (this.configuracion.isSonido()){
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
@@ -218,6 +226,10 @@ public class ActividadPrincipal extends AppCompatActivity {
     }
 
     private void victoria() {
+        onChronoPause=chrono.getBase();
+        chrono.stop();
+        isChronoRunning=false;
+
         if (this.configuracion.isVibracion()){
             vibrator.vibrate(200);
         }
@@ -274,7 +286,8 @@ public class ActividadPrincipal extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("juego", juego);
-        outState.putLong("time", chrono.getBase());
+        outState.putLong("time", onChronoPause);
+
     }
 
     @Override
@@ -284,6 +297,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego=(Juego)savedInstanceState.getSerializable("juego");
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
         chrono.setBase(savedInstanceState.getLong("time"));
+
         actualizar();
     }
 
@@ -303,11 +317,5 @@ public class ActividadPrincipal extends AppCompatActivity {
                 //TODO
             }
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
     }
 }

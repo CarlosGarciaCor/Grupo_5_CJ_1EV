@@ -3,6 +3,7 @@ package com.islasf.android.grupo5;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.SystemClock;
@@ -24,6 +25,7 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -37,8 +39,7 @@ public class ActividadPrincipal extends AppCompatActivity {
     private TextView tbPulsaciones;
 
     private Chronometer chrono;
-    private boolean isChronoRunning=false;
-    private long onChronoPause=0;
+    private long timePaused=0;
 
     private Vibrator vibrator;
     private SoundPool poolSonidos;
@@ -98,7 +99,8 @@ public class ActividadPrincipal extends AppCompatActivity {
                                 break;
                             case R.id.opts_opcion_1:
                                 Intent preferencias = new Intent(getApplicationContext(), ConfiguracionActivity.class);
-                                preferencias.putExtra("time", chrono.getBase());
+                                timePaused=chrono.getBase();
+                                preferencias.putExtra("time", timePaused);
                                 startActivityForResult(preferencias, 1234);
                                 break;
                             case R.id.opt_salir:
@@ -113,7 +115,7 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         gameLayout = (LinearLayout) findViewById(R.id.gameLayout);
 
-        chrono= (Chronometer) findViewById(R.id.chrono);
+        chrono = (Chronometer) findViewById(R.id.chrono);
 
         tbPulsaciones=(TextView)findViewById(R.id.tbPulsaciones);
         tbPulsaciones.setText("0");
@@ -172,6 +174,9 @@ public class ActividadPrincipal extends AppCompatActivity {
         }
         else
             actualizar();
+
+        chrono.setBase(SystemClock.elapsedRealtime());
+        chrono.start();
     }
 
     private void crearBoton(Casilla casilla, int id, LinearLayout linea){
@@ -204,13 +209,6 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void pulsarCasilla(View v){
 
-        if (!isChronoRunning){
-            chrono.setBase(SystemClock.elapsedRealtime());
-            chrono.start();
-            isChronoRunning=true;
-        }
-
-
         if (this.configuracion.isSonido()){
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
@@ -228,9 +226,7 @@ public class ActividadPrincipal extends AppCompatActivity {
     }
 
     private void victoria() {
-        onChronoPause=chrono.getBase();
         chrono.stop();
-        isChronoRunning=false;
 
         if (this.configuracion.isVibracion()){
             vibrator.vibrate(200);
@@ -353,8 +349,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("juego", juego);
-        outState.putLong("time", onChronoPause);
-
+        outState.putLong("time", chrono.getBase());
     }
 
     @Override
@@ -364,7 +359,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego=(Juego)savedInstanceState.getSerializable("juego");
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
         chrono.setBase(savedInstanceState.getLong("time"));
-
         actualizar();
     }
 
@@ -374,14 +368,13 @@ public class ActividadPrincipal extends AppCompatActivity {
             if (resultCode == 1){
                 // Si vuelve de la configuración habiendo cambiado el formato:
                 nuevaPartida();
+                Toast toast=Toast.makeText(this, R.string.changedConfig, Toast.LENGTH_SHORT);
+                toast.show();
             } else if (resultCode == 2){
                 // Si vuelve de la configuración sin cambiar nada definitorio:
                 cargarConfiguracion();
                 actualizar();
-                chrono.setBase(data.getLongExtra("time", SystemClock.elapsedRealtime())); //TODO
-            } else if (resultCode == 0){
-                //Si vuelve dandole al back del hardware.
-                //TODO
+                chrono.setBase(chrono.getBase() - data.getLongExtra("time", SystemClock.elapsedRealtime()));
             }
         }
     }

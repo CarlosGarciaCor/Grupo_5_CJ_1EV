@@ -24,6 +24,7 @@
     <string name="accept">Accept</string>
     <string name="back">Back</string>
 
+    <string name="changedConfig">Game\'s been restarted!</string>
 
     <string name="dTitle">YOU WON!</string>
     <string name="dDesc">Congratulations</string>

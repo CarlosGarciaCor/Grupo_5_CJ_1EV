@@ -1,6 +1,7 @@
 package com.islasf.android.grupo5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +22,19 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private TextView textoMax;
 
     private RadioGroup radioGroup;
+    private RadioButton rbColor;
+    private RadioButton rbNumero;
 
     private CheckBox vibracion;
     private CheckBox sonido;
+
+    private long tiempoCrono;
+
+    // Elementos de inicio:
+    private int indiceX;
+    private int indiceY;
+    private int numeroIndiceMax;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +51,26 @@ public class ConfiguracionActivity extends AppCompatActivity {
         textoMax = (TextView)findViewById(R.id.textoMax);
 
         radioGroup = (RadioGroup)findViewById(R.id.rGroup);
+        rbColor = (RadioButton)findViewById(R.id.rButtColores);
+        rbNumero = (RadioButton)findViewById(R.id.rButtNumeros);
 
         vibracion = (CheckBox)findViewById(R.id.cbVibr);
         sonido = (CheckBox)findViewById(R.id.cbSoni);
         // /componentes
+
+        // Cargamos una posible configuracion previa:
+        cargarConfiguracion();
+        //
+
+        // Recogemos los valores definitorios (si estos se modifican la partida se reinicia, si no no.
+        indiceX = seekBarX.getProgress()+3;
+        indiceY = seekBarY.getProgress()+3;
+        numeroIndiceMax = seekBarMax.getProgress()+2;
+
+        //Recogemos el tiempo del crono del juego
+        Intent recibido = getIntent();
+        tiempoCrono = recibido.getExtras().getLong("time");
+        //
 
         // Ponemos un valor de inicio a los textos de las seekbar:
         textoX.setText(getResources().getString(R.string.seekbarX)+" " + (seekBarX.getProgress()+3));
@@ -94,6 +121,28 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     }
 
+    private void cargarConfiguracion(){
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        seekBarX.setProgress(prefs.getInt("indiceX", 3)-3);
+        seekBarY.setProgress(prefs.getInt("indiceY", 5)-3);
+        seekBarMax.setProgress(prefs.getInt("indiceMax", 2)-2);
+
+        switch (prefs.getString("modo", "COLORES")){
+            case "COLORES":
+                rbColor.setChecked(true);
+                rbNumero.setChecked(false);
+                break;
+            case "NUMEROS":
+                rbNumero.setChecked(true);
+                rbColor.setChecked(false);
+                break;
+        }
+
+        vibracion.setChecked(prefs.getBoolean("vibracion", true));
+        sonido.setChecked(prefs.getBoolean("sonido", true));
+
+    }
+
     public void aceptarConfiguracion(View v){
         int elementosX = seekBarX.getProgress()+3;
         int elementosY = seekBarY.getProgress()+3;
@@ -124,13 +173,27 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         editor.apply();
 
-        setResult(1);
-        this.finish();
+
+        /*
+            Si se ha modificado algún parametro definitorio se inicia una nueva partida, si no, solo se actualiza el diseño.
+         */
+        if (elementosX != indiceX || elementosY != indiceY || numMax != numeroIndiceMax){
+            setResult(1);
+            this.finish();
+        } else {
+            Intent i = new Intent();
+            i.putExtra("time", tiempoCrono);
+            setResult(2, i);
+            this.finish();
+        }
+
         //TODO Layout landscape para esta vaina
     }
 
     public void volver(View v){
-        setResult(0);
+        Intent i = new Intent();
+        i.putExtra("time", tiempoCrono);
+        setResult(0, i);
         this.finish();
     }
 }

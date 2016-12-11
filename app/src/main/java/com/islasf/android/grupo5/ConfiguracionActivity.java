@@ -1,5 +1,7 @@
 package com.islasf.android.grupo5;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -109,7 +111,21 @@ public class ConfiguracionActivity extends AppCompatActivity {
                 break;
         }
 
-        Configuracion conf = new Configuracion(numMax+2, elementosX+3, elementosY+3, isVibracion, isSonido, modo);
+        // Guardamos la configuración en el fichero de preferencias:
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putInt("indiceX", elementosX);
+        editor.putInt("indiceY", elementosY);
+        editor.putInt("indiceMax", numMax);
+        editor.putString("modo", modo);
+        editor.putBoolean("vibracion", isVibracion);
+        editor.putBoolean("sonido", isSonido);
+
+        editor.apply();
+
+        //TODO Volver a la actividad principal empezando una nueva partida, pero si en vez de esto le da a volver tiene que volver a la partida que estaba, damn.
+        //TODO Layout landscape para esta vaina
     }
 
     public void volver(View v){

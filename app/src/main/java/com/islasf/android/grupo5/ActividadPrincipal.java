@@ -1,36 +1,27 @@
 package com.islasf.android.grupo5;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.PersistableBundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -48,18 +39,25 @@ public class ActividadPrincipal extends AppCompatActivity {
     private SoundPool poolSonidos;
     private int sonidoPulsacion;
 
-    private final int[] BTN_DRAW={R.drawable.draw_btn1,
-            R.drawable.draw_btn2,
-            R.drawable.draw_btn3,
-            R.drawable.draw_btn4,
-            R.drawable.draw_btn5};
+    private final int[] BTN_COLORDRAW ={R.drawable.draw_btncolor1,
+            R.drawable.draw_btncolor2,
+            R.drawable.draw_btncolor3,
+            R.drawable.draw_btncolor4,
+            R.drawable.draw_btncolor5};
+
+    private final int BTN_NUMDRAW = R.drawable.draw_btnnum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // todo Me tira exception al cambiar de pantalla, habla de qu no se puede serializar el objeto juego. Supongo que todo esto tiene que ver con el bundle entonces no he podido probar
+        // todo si ya funciona el juego con numeros. la cosa es que creo que en algun punto confundimos X e Y, porque por defalt me carga un 4x3 xddddd, soy listo.
+
+        // todo borrar los 5 draws que he hecho, dejar uno y lo que hay que hacer es darle propiedades de texto al button
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE); //Instanciamos vibrador y soundpool.
+        //TODO Este constructor está full deprecated, pero solo para la API 21, podriamos hacer un if que te saque la API y dependiendo de ella me haga esto o el SoundPool.Builder
         poolSonidos = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC); // Para que si el usuairo sube o baja el volumen lo haga del de la música.
@@ -131,7 +129,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         chrono.setBase(SystemClock.elapsedRealtime()-0); //Restart chrono
         tbPulsaciones.setText(Integer.toString(0));
 
-        configuracion=new Configuracion(5, 10, 15, true, true, "NUMEROS");
+        cargarConfiguracion();
 
         DisplayMetrics display=new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(display);
@@ -179,8 +177,17 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         Button btn=new Button(this);
         btn.setId(id);
-
-        btn.setBackground(getResources().getDrawable(BTN_DRAW[casilla.getValor() - 1]));
+        //TODO hacer drawables numericos y elegir aquí en funcion de configuracion.getModo
+        //TODO como lo de más arriba, getDrawable esta deprecated para < API21, mirar si queremos controlarlo
+        if (configuracion.getModo() == "COLORES")
+            btn.setBackground(getResources().getDrawable(BTN_COLORDRAW[casilla.getValor() - 1]));
+        else{
+            btn.setBackground(getResources().getDrawable(BTN_NUMDRAW));
+            btn.setTextColor(getResources().getColor(R.color.white));
+            btn.setTextSize(getResources().getDimension(R.dimen.textoBoton));
+            btn.setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
+            btn.setText(casilla.getValor());
+        }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -254,9 +261,32 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private void actualizar(){
         for (int i=0;i<botones.size();i++){
-            botones.get(i).setBackground(getResources().getDrawable(BTN_DRAW[juego.getCasillas().get(i).getValor()-1]));
+            if (configuracion.getModo() == "COLORES")
+                botones.get(i).setBackground(getResources().getDrawable(BTN_COLORDRAW[juego.getCasillas().get(i).getValor()-1]));
+            else {
+                //TODO Joder cuanto deprecado
+                botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
+                botones.get(i).setBackground(getResources().getDrawable(BTN_NUMDRAW));
+                botones.get(i).setTextColor(getResources().getColor(R.color.white));
+                botones.get(i).setTextSize(getResources().getDimension(R.dimen.textoBoton));
+                botones.get(i).setShadowLayer(5, 0, 0, getResources().getColor(R.color.sombraBoton));
+                botones.get(i).setText(juego.getCasillas().get(i).getValor());
+            }
         }
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
+    }
+
+    private void cargarConfiguracion(){
+        // TODO preferencias
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        configuracion = new Configuracion(
+                prefs.getInt("indiceX", 3),
+                prefs.getInt("indiceY", 4),
+                prefs.getInt("indiceMax", 3),
+                prefs.getBoolean("vibracion", true),
+                prefs.getBoolean("sonido",true),
+                prefs.getString("modo", "COLORES")
+        );
     }
 
     @Override

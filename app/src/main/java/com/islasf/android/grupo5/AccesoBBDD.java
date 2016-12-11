@@ -23,6 +23,7 @@ public class AccesoBBDD {
 
         if (db != null) { //Si la base de datos se abre correctamente:
             ContentValues contenido = new ContentValues();
+            // TODO terminar por aquí
             //contenido.put("nombre", "nombre"); //OJETE! Hay que sacar el nombre y eso.
             //contenido.put("tiempo" juego.getTiempo); // Ojete, más de lo mismo.
             contenido.put("disposicion", juego.getConfiguracion().getX()+"x"+juego.getConfiguracion().getY());

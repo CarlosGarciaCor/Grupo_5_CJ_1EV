@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="17"
-        android:progress="0"
+        android:progress="1"
         android:id="@+id/barraElementosY"
         android:layout_weight="1.30" />
 
@@ -63,7 +63,7 @@
         android:layout_width="207dp"
         android:layout_height="wrap_content"
         android:max="3"
-        android:progress="0"
+        android:progress="1"
         android:layout_weight="1.30"
         android:id="@+id/barraElementosIndice"
         android:layout_gravity="center"/>
@@ -121,14 +121,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cbVibr"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:checked="true" />
 
         <CheckBox
             android:text="@string/soun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cbSoni"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:checked="true" />
 
     </LinearLayout>
 

@@ -304,4 +304,10 @@ public class ActividadPrincipal extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
 }

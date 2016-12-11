@@ -28,6 +28,7 @@
 
     <string name="dTitle">YOU WON!</string>
     <string name="dDesc">Congratulations</string>
+    <string name="dUser">Anonymous</string>
     <string name="restart">Play Again</string>
     <string name="newGame">New Game</string>
 </resources>

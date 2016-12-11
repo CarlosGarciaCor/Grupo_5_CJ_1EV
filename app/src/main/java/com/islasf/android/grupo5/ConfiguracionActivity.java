@@ -49,7 +49,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         // Ponemos un valor de inicio a los textos de las seekbar:
         textoX.setText(getResources().getString(R.string.seekbarX)+" " + (seekBarX.getProgress()+3));
         textoY.setText(getResources().getString(R.string.seekbarY)+" " + (seekBarY.getProgress()+3));
-        textoMax.setText(getResources().getString(R.string.numMax)+" " + (seekBarMax.getProgress()+3));
+        textoMax.setText(getResources().getString(R.string.numMax)+" " + (seekBarMax.getProgress()+2));
         // /textos
 
         // Los listeners para cambiar el texto según cambian las barras:
@@ -96,9 +96,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
     }
 
     public void aceptarConfiguracion(View v){
-        int elementosX = seekBarX.getProgress();
-        int elementosY = seekBarY.getProgress();
-        int numMax = seekBarMax.getProgress();
+        int elementosX = seekBarX.getProgress()+3;
+        int elementosY = seekBarY.getProgress()+3;
+        int numMax = seekBarMax.getProgress()+2;
         String modo = "COLORES";
         boolean isVibracion = vibracion.isChecked();
         boolean isSonido = sonido.isChecked();

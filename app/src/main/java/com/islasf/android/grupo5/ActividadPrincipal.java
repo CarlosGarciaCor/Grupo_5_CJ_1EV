@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -79,6 +80,7 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_action_list); // Le indicamos cual es el icono.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Habilitamos la función del botón.
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
 
         //Pulsación de botones del NavView y demás.
         NavigationView navView = (NavigationView)findViewById(R.id.navview);
@@ -269,7 +271,7 @@ public class ActividadPrincipal extends AppCompatActivity {
     }
 
     private void cargarConfiguracion(){
-        // TODO preferencias
+
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         configuracion = new Configuracion(
                 prefs.getInt("indiceMax", 3),
@@ -279,6 +281,71 @@ public class ActividadPrincipal extends AppCompatActivity {
                 prefs.getBoolean("sonido",true),
                 prefs.getString("modo", "COLORES")
         );
+
+        ImageButton botonVibracion = (ImageButton)findViewById(R.id.btnVibracion);
+        ImageButton botonSonido = (ImageButton)findViewById(R.id.btnSonido);
+
+        if (prefs.getBoolean("vibracion", true)){
+            botonVibracion.setImageResource(R.drawable.ic_vibracion);
+            botonVibracion.setTag(true);
+        } else {
+            botonVibracion.setImageResource(R.drawable.ic_vibracion_no);
+            botonVibracion.setTag(false);
+        }
+
+        if (prefs.getBoolean("sonido", true)){
+            botonSonido.setImageResource(R.drawable.ic_sonido);
+            botonSonido.setTag(true);
+        } else {
+            botonSonido.setImageResource(R.drawable.ic_sonido_no);
+            botonSonido.setTag(false);
+        }
+    }
+
+    public void pulsarBtnVibracion(View v){
+        ImageButton btnPulsado = (ImageButton) v;
+
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (btnPulsado.getTag() == (Object)true){
+            btnPulsado.setImageResource(R.drawable.ic_vibracion_no);
+            btnPulsado.setTag(false);
+
+            editor.putBoolean("vibracion", false);
+            editor.apply();
+        } else {
+            btnPulsado.setImageResource(R.drawable.ic_vibracion);
+            btnPulsado.setTag(true);
+
+            editor.putBoolean("vibracion", true);
+            editor.apply();
+        }
+
+        cargarConfiguracion();
+    }
+
+    public void pulsarBtnSonido(View v){
+        ImageButton btnPulsado = (ImageButton) v;
+
+        SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (btnPulsado.getTag() == (Object)true){
+            btnPulsado.setImageResource(R.drawable.ic_sonido_no);
+            btnPulsado.setTag(false);
+
+            editor.putBoolean("sonido", false);
+            editor.apply();
+        } else {
+            btnPulsado.setImageResource(R.drawable.ic_sonido);
+            btnPulsado.setTag(true);
+
+            editor.putBoolean("sonido", true);
+            editor.apply();
+        }
+
+        cargarConfiguracion();
     }
 
     @Override

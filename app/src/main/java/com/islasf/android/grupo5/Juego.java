@@ -105,7 +105,7 @@ public class Juego implements Serializable {
     /**
      * Método privado para obtener el índice en el que se encuentra una Casilla dentro de la colección.
      * @param casilla Casilla a buscar dentro de la colección.
-     * @return Índice en el que se encuentra la Casilla buscada en la colección.
+     * @return Indice en el que se encuentra la Casilla buscada en la colección.
      */
     private int getIndex(Casilla casilla){
         for (Casilla item: listCasillas){

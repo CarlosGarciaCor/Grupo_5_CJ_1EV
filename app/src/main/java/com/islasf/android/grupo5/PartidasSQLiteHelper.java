@@ -24,7 +24,6 @@ public class PartidasSQLiteHelper extends SQLiteOpenHelper {
                 "disposicion varchar(5) not null," +
                 "numMax integer not null," +
                 "pulsaciones integer not null)");
-
     }
 
     @Override

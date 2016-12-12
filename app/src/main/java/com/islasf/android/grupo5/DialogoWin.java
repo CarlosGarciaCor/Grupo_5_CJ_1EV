@@ -27,6 +27,8 @@ public class DialogoWin extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        setCancelable(false); //Para que sea modal, que obligue al usuario a actuar en el dialog
+        
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

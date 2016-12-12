@@ -59,14 +59,10 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // todo Me tira exception al cambiar de pantalla, habla de qu no se puede serializar el objeto juego. Supongo que todo esto tiene que ver con el bundle entonces no he podido probar
-        // todo si ya funciona el juego con numeros. la cosa es que creo que en algun punto confundimos X e Y, porque por defalt me carga un 4x3 xddddd, soy listo.
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_principal);
 
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE); //Instanciamos vibrador y soundpool.
-        //TODO Este constructor está full deprecated, pero solo para la API 21, podriamos hacer un if que te saque la API y dependiendo de ella me haga esto o el SoundPool.Builder
         poolSonidos = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC); // Para que si el usuairo sube o baja el volumen lo haga del de la música.
@@ -107,6 +103,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                                 Intent verPartidas = new Intent(getApplicationContext(), VistaPartidasBBDD.class);
                                 timePaused = chrono.getBase();
                                 startActivity(verPartidas);
+                                break;
                             case R.id.opt_salir:
                                 finish();
                         }

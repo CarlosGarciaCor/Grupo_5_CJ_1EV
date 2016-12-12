@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_vista_partidas_bbdd"
     android:layout_width="match_parent"
@@ -8,16 +8,81 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.islasf.android.grupo5.VistaPartidasBBDD">
+    tools:context="com.islasf.android.grupo5.VistaPartidasBBDD"
+    android:orientation="vertical">
 
-    <TableRow
+    <TextView
+        android:text="@string/tituloBBDD"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:id="@+id/textoTitulo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true" />
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listaPartidas"
-            android:layout_weight="1"/>
-    </TableRow>
-</TableLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/timeBBDD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textTiempo"
+            android:layout_weight="1"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:text="@string/nameBBDD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textNombre"
+            android:layout_weight="1.50"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:text="@string/dispoBBDD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textDispo"
+            android:layout_weight="1"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:text="@string/indiceBBDD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textIndice"
+            android:layout_weight="0.75"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:text="@string/pulsaBBDD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textPulsa"
+            android:layout_weight="0.75"
+            android:textStyle="normal|bold" />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/listaPartidas"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp">
+    </ListView>
+
+    <Button
+        android:text="@string/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:onClick="botonVolver" />
+
+</LinearLayout>

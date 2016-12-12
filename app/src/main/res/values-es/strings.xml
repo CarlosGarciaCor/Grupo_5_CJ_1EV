@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Juego Flip</string>
+    <string name="accept">Aceptar</string>
+    <string name="back">Volver</string>
+    <string name="cbText">No guardar</string>
+    <string name="changedConfig">¡El juego se ha reiniciado!</string>
+    <string name="colorOpt">Colores</string>
+    <string name="colorOrNumber">Estilo de los botones:</string>
+    <string name="dDesc">Felicidades</string>
+    <string name="dTitle">¡HAS GANADO!</string>
+    <string name="dUser">Anónimo</string>
+    <string name="dispoBBDD"><u>Disp.</u></string>
+    <string name="flipmenu">Menú flip</string>
+    <string name="grp1">Juego</string>
+    <string name="grp2">Opciones</string>
+    <string name="indiceBBDD"><u>Max</u></string>
+    <string name="nameBBDD"><u>Nombre</u></string>
+    <string name="newGame">Nueva partida</string>
+    <string name="numMax">Número máximo de elementos:</string>
+    <string name="numOpt">Números</string>
+    <string name="optC1">Configuración</string>
+    <string name="optExit">Salir</string>
+    <string name="optJ1">Nueva partida</string>
+    <string name="optJ2">Reiniciar partida</string>
+    <string name="optV1">Listado de partidas</string>
+    <string name="prefs">Preferencias:</string>
+    <string name="pulsaBBDD"><u>Puls</u></string>
+    <string name="restart">Reiniciar</string>
+    <string name="seekbarX">Elementos en el eje X:</string>
+    <string name="seekbarY">Elementos en el eje Y:</string>
+    <string name="soun">Sonido</string>
+    <string name="timeBBDD"><u>Tiempo</u></string>
+    <string name="tituloBBDD"><u>Historial de partidas</u></string>
+    <string name="username">Nombre de usuario</string>
+    <string name="vibr">Vibracion</string>
+</resources>

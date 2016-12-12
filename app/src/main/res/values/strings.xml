@@ -33,4 +33,11 @@
     <string name="cbText">Don\'t save</string>
     <string name="restart">Play Again</string>
     <string name="newGame">New Game</string>
+
+    <string name="tituloBBDD"><u>Game record</u></string>
+    <string name="timeBBDD"><u>Time</u></string>
+    <string name="nameBBDD"><u>Username</u></string>
+    <string name="dispoBBDD"><u>Setup</u></string>
+    <string name="indiceBBDD"><u>Max</u></string>
+    <string name="pulsaBBDD"><u>Puls</u></string>
 </resources>

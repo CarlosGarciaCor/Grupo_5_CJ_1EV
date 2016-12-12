@@ -38,7 +38,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //TODO Que la configuracion cuando empiece sea la del fichero de prefs.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracion);
 
@@ -187,7 +186,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
             this.finish();
         }
 
-        //TODO Layout landscape para esta vaina
     }
 
     public void volver(View v){

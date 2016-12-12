@@ -26,12 +26,7 @@
         android:layout_height="wrap_content"
         android:max="13"
         android:progress="0"
-        android:id="@+id/barraElementosX"
-        android:layout_weight="1.30" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:id="@+id/barraElementosX" />
 
     <TextView
         android:text="@string/seekbarY"
@@ -45,12 +40,7 @@
         android:layout_height="wrap_content"
         android:max="17"
         android:progress="1"
-        android:id="@+id/barraElementosY"
-        android:layout_weight="1.30" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:id="@+id/barraElementosY" />
 
     <TextView
         android:text="@string/numMax"
@@ -64,13 +54,8 @@
         android:layout_height="wrap_content"
         android:max="3"
         android:progress="1"
-        android:layout_weight="1.30"
         android:id="@+id/barraElementosIndice"
         android:layout_gravity="center"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -101,10 +86,6 @@
 
     </RadioGroup>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
     <TextView
         android:text="@string/prefs"
         android:layout_width="match_parent"
@@ -133,11 +114,6 @@
             android:checked="true" />
 
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="horizontal"

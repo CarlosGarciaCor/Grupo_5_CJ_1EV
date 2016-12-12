@@ -123,8 +123,8 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private void cargarConfiguracion(){
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         seekBarX.setProgress(prefs.getInt("indiceX", 3)-3);
-        seekBarY.setProgress(prefs.getInt("indiceY", 5)-3);
-        seekBarMax.setProgress(prefs.getInt("indiceMax", 2)-2);
+        seekBarY.setProgress(prefs.getInt("indiceY", 4)-3);
+        seekBarMax.setProgress(prefs.getInt("indiceMax", 3)-2);
 
         switch (prefs.getString("modo", "COLORES")){
             case "COLORES":

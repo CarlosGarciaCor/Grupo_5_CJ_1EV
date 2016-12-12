@@ -44,7 +44,9 @@
             android:id="@+id/etUser"
             android:maxLength="10"
             android:maxLines="0"
-            android:inputType="textPersonName" />
+            android:textColor="@color/sombraBoton"
+            android:inputType="textPersonName"
+            android:onClick="dialogClickado"/>
 
         <CheckBox
             android:layout_width="wrap_content"

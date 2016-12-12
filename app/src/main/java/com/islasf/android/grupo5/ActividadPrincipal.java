@@ -214,6 +214,10 @@ public class ActividadPrincipal extends AppCompatActivity {
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
 
+        if (this.configuracion.isVibracion()){
+            vibrator.vibrate(300);
+        }
+
         Button btn=(Button)v;
         Casilla casilla=juego.getCasillas().get(btn.getId());
 
@@ -230,7 +234,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         chrono.stop();
 
         if (this.configuracion.isVibracion()){
-            vibrator.vibrate(200);
+            vibrator.vibrate(1000);
         }
         if (this.configuracion.isSonido()){
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);

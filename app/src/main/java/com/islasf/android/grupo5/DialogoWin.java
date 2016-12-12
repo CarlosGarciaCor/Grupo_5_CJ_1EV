@@ -12,23 +12,63 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 /**
+ * Diálogo personalizado que extiende de DialogFragment.
+ * Un diálogo en Android es un Fragment, es algo así como un fragmento de una actividad, no una
+ * actividad completa. Hay fragmentos predefinidos pero también puedes programarlos de forma
+ * personalizada, como es este caso.
+ *
+ * Para definirlo de forma personalizada hay que asignarle una vista, un layout. El layout
+ * de este fragmento es "dialogowin_layout.xml". En él dibujamos un título, un contenido e incluimos
+ * un EditText y un CheckBox para que el usuario meta su nombre y decida si quiere guardar el resultado
+ * o no.
+ *
+ * El ciclo de vida de un fragmento empieza cuando lo llamas desde alguna actividad con el método
+ * show(). El método en el que se construye el diálogo es el onCreateDialog, sobrescrito en esta clase.
  * @author Carlos García y Javier Sánchez
  */
 
 public class DialogoWin extends DialogFragment {
 
+    /**
+     * Atributo que hace referencia al CheckBox del diálogo, según el cual se va a guardar el resultado
+     * en la base de datos o no.
+     */
     private CheckBox cbSave;
+    /**
+     * EditText donde el usuario va a introducir el nombre con el que quiere guardar el resultado.
+     */
     private EditText edText;
 
+    /**
+     * Constructor que únicamente llama al constructor de la clase padre. Obligatorio ponerlo.
+     */
     public DialogoWin(){
         super();
     };
 
+
+    /**
+     * Este método es parecido al onCreate de las actividades. En él básicamente se va a construir el mensaje.
+     * Se ejecuta al llamar al método show.
+     *
+     * Para construir el mensaje con un layout personalizado es necesario primero inflar ese layout.
+     * Esto se hace con un objeto LayoutInflater. El layout inflado se le pasa como vista al fragment, y de
+     * esa vista se sacan los componentes con los que se va a trabajar (EditText y CheckBox).
+     *
+     * El diálogo va a tener dos botones: uno para reiniciar la partida y otro para crear una nueva. Los botones
+     * no están incluidos en el layout sino que los construye éste método directamente con los métodos
+     * setNeutralButton y setPositiveButton.
+     *
+     * Los botones llaman al método público onRespuesta de la actividad principal.
+     * @param savedInstanceState Bundle en el cual puedes meter datos para poder restaurarlos (en caso
+     *                           de rotar la pantalla, por ejemplo)
+     * @return Devuelve el diálogo contruido
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         setCancelable(false); //Para que sea modal, que obligue al usuario a actuar en el dialog
-        
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

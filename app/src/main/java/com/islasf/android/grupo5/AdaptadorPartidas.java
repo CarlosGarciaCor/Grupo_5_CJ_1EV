@@ -13,6 +13,8 @@ import java.util.ArrayList;
 /**
  * Clase AdaptadorPartida. <br>
  * Esta clase extiende ArrayAdapter y se utiliza para introducir los datos en una ListView.
+ *
+ * @author Carlos García y Javier Sánchez
  */
 public class AdaptadorPartidas extends ArrayAdapter<Juego> {
 

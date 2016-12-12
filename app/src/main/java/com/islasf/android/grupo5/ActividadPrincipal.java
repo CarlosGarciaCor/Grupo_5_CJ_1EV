@@ -103,6 +103,10 @@ public class ActividadPrincipal extends AppCompatActivity {
                                 preferencias.putExtra("time", timePaused);
                                 startActivityForResult(preferencias, 1234);
                                 break;
+                            case R.id.opt_ver_partidas:
+                                Intent verPartidas = new Intent(getApplicationContext(), VistaPartidasBBDD.class);
+                                timePaused = chrono.getBase();
+                                startActivity(verPartidas);
                             case R.id.opt_salir:
                                 finish();
                         }
@@ -243,8 +247,10 @@ public class ActividadPrincipal extends AppCompatActivity {
         //Guardamos resultado si no está marcado el CheckBox
         if (!notSave){
             AccesoBBDD acceso=new AccesoBBDD(this);
-            acceso.insertarPartida(juego, user, chrono.getBase());
-            acceso.limpiarTabla();
+            juego.setTiempo(chrono.getBase());
+            juego.setUsuario(user);
+            acceso.insertarPartida(juego);
+            //acceso.limpiarTabla();
         }
 
         if (result==0)

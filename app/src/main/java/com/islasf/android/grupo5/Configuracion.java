@@ -26,6 +26,12 @@ public class Configuracion implements Serializable{
         this.modo=modo;
     }
 
+    public Configuracion(int valorMax, int x, int y){
+        this.valorMax = valorMax;
+        this.x = x;
+        this.y = y;
+    }
+
     public int getValorMax() {
         return valorMax;
     }

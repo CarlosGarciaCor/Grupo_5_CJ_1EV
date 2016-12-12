@@ -17,6 +17,9 @@ public class Juego implements Serializable {
     private ArrayList<Casilla> listReinicio;
     private int numPulsaciones;
 
+    private long tiempo;
+    private String usuario;
+
     public Juego(Configuracion configuracion) {
         this.configuracion = configuracion;
         this.listCasillas=new ArrayList<>();
@@ -163,5 +166,26 @@ public class Juego implements Serializable {
 
     public void incrementarNumPulsaciones() {
         this.numPulsaciones++;
+    }
+
+    public void setNumPulsaciones(int numPulsaciones) {
+        this.numPulsaciones = numPulsaciones;
+    }
+
+    public long getTiempo() {
+
+        return tiempo;
+    }
+
+    public void setTiempo(long tiempo) {
+        this.tiempo = tiempo;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 }

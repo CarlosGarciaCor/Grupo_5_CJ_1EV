@@ -12,6 +12,19 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+/**
+ * Clase ConfiguracionActivity. <br>
+ *     La clase ConfiguracionActivity es la asociada con la actividad de ver y modificar la configuración del juego.
+ *
+ *     La actividad funciona de la siguiente manera:
+ *     <ul>
+ *         <li>1. Si existe una configuración previa carga los elementos con esos datos, si no, se cargan con unos datos por defecto.</li>
+ *         <li>2. Según el atributo vaya modificando datos se le va mostrando el resultado de estos, como son la disposicion NxM</li>
+ *         <li>3. Cuando el usuario le de a guardar la aplicación valora lo que se ha modificado. Si se han modificado datos relevantes a la partida se inicia una nueva. Si no,
+ *         se reanuda la que estaba con el estilo modificado.</li>
+ *         <li>4. Si el usuario le da a volver o utiliza el botón back del móvil volverá a la partida en la que estaba sin aplicar ningún cambio.</li>
+ *     </ul>
+ */
 public class ConfiguracionActivity extends AppCompatActivity {
 
     private SeekBar seekBarX;
@@ -36,6 +49,11 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private int numeroIndiceMax;
 
 
+    /**
+     * Método sobrescrito onCreate. Se encarga de cargar una posible configuración previa para el mostrado de los botones y recoge los valores definitorios para ver si estos se han modificado
+     * cuando el usuario le de a aceptar.
+     * @param savedInstanceState un posible bundle con una instancia anterior de la actividad (se ha reiniciado la aplicación).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +138,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Se encarga de cargar una posible configuración en uso. Si no hay ninguna configuración en uso (es el primer inicio de la app) entonces carga los valores que toma la configuración por defecto en el
+     * primer inicio.
+     */
     private void cargarConfiguracion(){
         SharedPreferences prefs = getSharedPreferences("Configuracion", Context.MODE_PRIVATE);
         seekBarX.setProgress(prefs.getInt("indiceX", 3)-3);
@@ -142,6 +164,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Recoge los valores que ha modificado el usuario, verifica que alguno de estos sea definitorio para la partida y manda un resultado u otro a la actividad principal dependiendo de esto.
+     * @param v el botón desde el que es llamado, el botón de aceptar.
+     */
     public void aceptarConfiguracion(View v){
         int elementosX = seekBarX.getProgress()+3;
         int elementosY = seekBarY.getProgress()+3;
@@ -188,6 +214,11 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * El método llamado cuando el usuario pulsa Volver. Se encarga de devolverle a la actividad el tiempo del crono (beta) y de mandarle un codigo de resultado para que la actividad principal
+     * identifique lo que el usuario ha decidido (volver sin aceptar los cambios).
+     * @param v el botón volver.
+     */
     public void volver(View v){
         Intent i = new Intent();
         i.putExtra("time", tiempoCrono);

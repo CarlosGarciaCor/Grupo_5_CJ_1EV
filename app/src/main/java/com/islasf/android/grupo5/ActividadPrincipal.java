@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -215,7 +216,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         }
 
         if (this.configuracion.isVibracion()){
-            vibrator.vibrate(300);
+            vibrator.vibrate(200);
         }
 
         Button btn=(Button)v;
@@ -354,6 +355,12 @@ public class ActividadPrincipal extends AppCompatActivity {
         }
 
         cargarConfiguracion();
+    }
+
+    public void dialogClickado(View v){
+        EditText cajaTexto = (EditText)v;
+        cajaTexto.setTextColor(Color.BLACK);
+        cajaTexto.setText("");
     }
 
     @Override

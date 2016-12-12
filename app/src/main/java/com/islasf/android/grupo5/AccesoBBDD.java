@@ -2,6 +2,7 @@ package com.islasf.android.grupo5;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -16,16 +17,15 @@ public class AccesoBBDD {
         this.contexto = contexto;
     }
 
-    public void insertarPartida(Juego juego) {
+    public void insertarPartida(Juego juego, String user, long tiempo) {
         // 1. Abrir bbdd en mood escritura.
         PartidasSQLiteHelper partidas = new PartidasSQLiteHelper(contexto, "BDPartidas", null, 1);
         SQLiteDatabase db = partidas.getWritableDatabase();
 
         if (db != null) { //Si la base de datos se abre correctamente:
             ContentValues contenido = new ContentValues();
-            // TODO terminar por aquí
-            //contenido.put("nombre", "nombre"); //OJETE! Hay que sacar el nombre y eso.
-            //contenido.put("tiempo" juego.getTiempo); // Ojete, más de lo mismo.
+            contenido.put("nombre", user);
+            contenido.put("tiempo", tiempo);
             contenido.put("disposicion", juego.getConfiguracion().getX()+"x"+juego.getConfiguracion().getY());
             contenido.put("numMax", juego.getConfiguracion().getValorMax());
             contenido.put("pulsaciones", juego.getNumPulsaciones());
@@ -47,5 +47,25 @@ public class AccesoBBDD {
         }
     }
 
+    public void limpiarTabla(){
+        PartidasSQLiteHelper partidas = new PartidasSQLiteHelper(contexto, "BDPartidas", null, 1);
+        SQLiteDatabase db = partidas.getWritableDatabase();
 
+        if (db != null){
+            db.delete("Partida", null, null);
+
+            db.close();
+        }
+    }
+
+    public Cursor selectAll(){
+        PartidasSQLiteHelper partidas = new PartidasSQLiteHelper(contexto, "BDPartidas", null, 1);
+        SQLiteDatabase db = partidas.getReadableDatabase();
+
+        if (db != null){
+            return db.query("Partida", null, null, null, null, null, null);
+        }
+
+        return null;
+    }
 }

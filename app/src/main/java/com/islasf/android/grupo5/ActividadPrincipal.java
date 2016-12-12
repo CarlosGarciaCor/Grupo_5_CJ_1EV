@@ -235,13 +235,18 @@ public class ActividadPrincipal extends AppCompatActivity {
             poolSonidos.play(sonidoPulsacion,1,1,1,0,1);
         }
 
-        //TODO guardar resultado
-
         DialogoWin win=new DialogoWin();
         win.show(getFragmentManager(), "dialogo");
     }
 
-    public void onRespuesta(int result){
+    public void onRespuesta(int result, boolean notSave, String user){
+        //Guardamos resultado si no está marcado el CheckBox
+        if (!notSave){
+            AccesoBBDD acceso=new AccesoBBDD(this);
+            acceso.insertarPartida(juego, user, chrono.getBase());
+            acceso.limpiarTabla();
+        }
+
         if (result==0)
             nuevaPartida();
         else

@@ -12,6 +12,7 @@
         android:layout_gravity="center">
 
         <TextView
+            android:paddingTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dTitle"
@@ -32,12 +33,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dDesc"
-            android:textSize="16dp"/>
+            android:textSize="16dp"
+            android:layout_gravity="center"/>
 
         <EditText
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:text="@string/dUser"
+            android:layout_gravity="center"
+            android:id="@+id/etUser"
+            android:maxLength="10"
+            android:maxLines="1" />
+
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dUser"/>
+            android:text="@string/cbText"
+            android:layout_gravity="center"
+            android:id="@+id/cbSave"/>
 
     </LinearLayout>
 

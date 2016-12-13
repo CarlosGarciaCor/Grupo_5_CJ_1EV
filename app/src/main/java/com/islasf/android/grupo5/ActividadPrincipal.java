@@ -598,7 +598,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                 // Si vuelve de la configuración sin cambiar nada definitorio:
                 cargarConfiguracion();
                 actualizar();
-                chrono.setBase(chrono.getBase() - data.getLongExtra("time", SystemClock.elapsedRealtime()));
+                chrono.setBase(data.getLongExtra("time", SystemClock.elapsedRealtime()));
             }
         }
     }

@@ -125,46 +125,29 @@ public class Juego implements Serializable {
      * </ul>
      *
      * Lo que hace en los dos casos es recorrer la colección de casillas e incrementar el valor de
-     * las casillas que encuentra que cumplan las condiciones anteriores.
+     * las casillas que encuentra que cumplan las condiciones anteriores. Para cada casilla en la
+     * iteración comprueba si tiene una arista en común (ver método compartenArista)
      * @param casilla Casilla pulsada
      */
     public void pulsarCasilla(Casilla casilla){
         casilla=listCasillas.get(this.getIndex(casilla)); //Para coger el objeto que está dentro de la lista.
         casilla.incrementarValor(this.configuracion.getValorMax());
 
-        //Si es una esquina:
-        if (casilla.getX()==1 || casilla.getX()==this.configuracion.getX()){
-            //Recorremos la colección e incrementamos las casillas que tenga a los lados y
-            //la que comparta arista
-
-            for (Casilla item: listCasillas){
-                if (casilla.getY()==item.getY()){
-                    if (item.getX()==casilla.getX()+1 || item.getX()==casilla.getX()-1)
-                        item.incrementarValor(this.configuracion.getValorMax());
-                }
-                else if (casilla.getX()==item.getX()){
-                    if (item.getY()==casilla.getY()+1 || item.getY()==casilla.getY()-1)
-                        item.incrementarValor(this.configuracion.getValorMax());
-                }
-                if (compartenArista(casilla, item))
+        for (Casilla item: listCasillas){
+            //Si está a un lado en el eje de las Y
+            if (casilla.getY()==item.getY()){
+                if (item.getX()==casilla.getX()+1 || item.getX()==casilla.getX()-1)
                     item.incrementarValor(this.configuracion.getValorMax());
             }
-        }
-
-        else {
-            //Si no es una esquina, recorremos la lista de casillas y incrementamos el valor de
-            //las que tengan la misma x o la misma y (las que estén a los lados)
-
-            for (Casilla item: listCasillas){
-                if (casilla.getY()==item.getY()){
-                    if (item.getX()==casilla.getX()+1 || item.getX()==casilla.getX()-1)
-                        item.incrementarValor(this.configuracion.getValorMax());
-                }
-                else if (casilla.getX()==item.getX()){
-                    if (item.getY()==casilla.getY()+1 || item.getY()==casilla.getY()-1)
-                        item.incrementarValor(this.configuracion.getValorMax());
-                }
+            //Si está a un lado en el eje de las X
+            else if (casilla.getX()==item.getX()){
+                if (item.getY()==casilla.getY()+1 || item.getY()==casilla.getY()-1)
+                    item.incrementarValor(this.configuracion.getValorMax());
             }
+
+            //Si es una esquina y comparte arista
+            if (compartenArista(casilla, item))
+                item.incrementarValor(this.configuracion.getValorMax());
         }
     }
 
@@ -172,6 +155,9 @@ public class Juego implements Serializable {
      * Método privado para determinar si una casilla comparte arista con otra. Como el tablero es cuadrado,
      * hay cuatro esquinas, por lo que éste método descubre de qué esquina se trata y si la otra casilla comparte
      * arista o no con ella.
+     *
+     * Si el primer parámetro no es ninguna esquina no entrará en ninguna de las cuatro condiciones, y
+     * retornará null.
      * @param esquina Casilla esquina.
      * @param arista Casilla de la cual se busca saber si comparte arista con la Casilla esquina.
      * @return

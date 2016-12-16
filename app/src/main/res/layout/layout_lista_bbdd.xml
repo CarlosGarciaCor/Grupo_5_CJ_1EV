@@ -9,31 +9,36 @@
         android:layout_height="35dp"
         android:id="@+id/textTiempo"
         android:textStyle="normal|bold"
-        android:layout_weight="1.00" />
+        android:layout_weight="1.00"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:id="@+id/textNombre"
         android:textStyle="normal|bold"
-        android:layout_weight="1.50" />
+        android:layout_weight="1.50"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:id="@+id/textDispo"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:id="@+id/textIndice"
-        android:layout_weight="0.75" />
+        android:layout_weight="0.75"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:id="@+id/textPulsa"
-        android:layout_weight="0.75" />
+        android:layout_weight="0.75"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

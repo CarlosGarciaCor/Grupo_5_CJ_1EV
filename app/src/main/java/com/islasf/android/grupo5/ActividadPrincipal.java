@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -567,7 +568,13 @@ public class ActividadPrincipal extends AppCompatActivity {
         juego=(Juego)savedInstanceState.getSerializable("juego");
         tbPulsaciones.setText(Integer.toString(juego.getNumPulsaciones()));
         chrono.setBase(savedInstanceState.getLong("time"));
-        actualizar();
+        try {
+            actualizar();
+        } catch (RuntimeException ex){
+            // Si capturo la excepción para que no pete lo que sigue es el onResultActivity.
+            // El problema es que al volver aquí no se cierra el menú lateral asi que lo chapo aquí.
+            menuLateral.closeDrawers();
+        }
     }
 
     /**

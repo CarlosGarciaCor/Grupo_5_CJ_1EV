@@ -70,7 +70,7 @@ public class AccesoBBDD {
                     StringTokenizer tokenizer = new StringTokenizer(disposicion, "x");
                     int x = Integer.valueOf(tokenizer.nextToken());
                     int y = Integer.valueOf(tokenizer.nextToken());
-                    Juego juego = new Juego(new Configuracion(c.getInt(4), c.getInt(x), c.getInt(y)));
+                    Juego juego = new Juego(new Configuracion(c.getInt(4), x, y));
                     juego.setTiempo(c.getLong(2));
                     juego.setUsuario(c.getString(1));
                     juego.setNumPulsaciones(c.getInt(5));

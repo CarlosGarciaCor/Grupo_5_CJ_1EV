@@ -18,11 +18,11 @@
         android:id="@+id/sub_opciones"
         android:title="@string/grp2">
         <menu>
-            <item
-                android:id="@+id/opts_opcion_1"
-                android:icon="@android:drawable/ic_menu_edit"
-                android:title="@string/optC1"/>
-        </menu>
+    <item
+        android:id="@+id/opts_opcion_1"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/optC1"/>
+</menu>
     </item>
 
     <item
